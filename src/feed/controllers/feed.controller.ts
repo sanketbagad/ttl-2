@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
-import { Observable } from 'rxjs';
-import { UpdateResult } from 'typeorm';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Observable, skip } from 'rxjs';
+import { DeleteResult, UpdateResult } from 'typeorm';
 import { FeedPost } from '../models/post.interface';
 import { FeedService } from '../services/feed.service';
 
@@ -20,8 +20,19 @@ export class FeedController {
         return this.feedService.findAll();
     }
 
+    @Get()
+    findSelected(@Query("take") take: number = 1, @Query("skip") skip: number): Observable<FeedPost[]> {
+        take = take > 20 ? 20 : take;
+        return this.feedService.findPost(take, skip);
+    }
+
     @Put(':id')
     update(@Body() post: FeedPost, @Param('id') id: number): Observable<UpdateResult> {
         return this.feedService.updatePost(id, post);
+    }
+
+    @Delete(':id')
+    delete(@Param('id') id: number): Observable<DeleteResult> {
+        return this.feedService.deletePost(id);
     }
 }
