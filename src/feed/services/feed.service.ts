@@ -36,4 +36,8 @@ export class FeedService {
             return <FeedPost[]>posts;
         }))
     }
+
+    findPostById(id: number): Observable<FeedPost> {
+        return from(this.feedPostRepository.findOne({id}, {relations: ['author']}))
+    }
 }
