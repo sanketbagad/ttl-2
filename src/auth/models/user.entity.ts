@@ -24,4 +24,7 @@ export class UserEntity {
 
   @Column({ select: false })
   password: string;
+
+  @Column({ nullable: true })
+    imagePath: string;
 }
