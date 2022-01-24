@@ -1,5 +1,6 @@
 import { FeedPostEntity } from "src/feed/models/post.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { FriendRequestEntity } from "./freind-req.entity";
 import { Role } from "./role.enum";
 
 @Entity("user")
@@ -26,5 +27,12 @@ export class UserEntity {
   password: string;
 
   @Column({ nullable: true })
-    imagePath: string;
+  imagePath: string;
+
+  @OneToMany(() => FriendRequestEntity, (friendRequestEntity) => friendRequestEntity.creator)
+  sentFriendRequest: FriendRequestEntity[];
+
+  @OneToMany(() => FriendRequestEntity, (friendRequestEntity) => friendRequestEntity.reciever)
+  recievedFriendRequest: FriendRequestEntity[];
+
 }
